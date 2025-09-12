@@ -1,0 +1,91 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景渐变 -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="qrGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f8fafc;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+  
+  <!-- 装饰性网格 -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  
+  <!-- QR码示例 -->
+  <g transform="translate(800, 165)">
+    <rect width="300" height="300" rx="20" fill="url(#qrGradient)" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+    <!-- 简化的QR码图案 -->
+    <g transform="translate(30, 30)">
+      <!-- 定位点 -->
+      <rect x="0" y="0" width="70" height="70" fill="#1f2937" rx="10"/>
+      <rect x="10" y="10" width="50" height="50" fill="white" rx="5"/>
+      <rect x="20" y="20" width="30" height="30" fill="#1f2937" rx="3"/>
+      
+      <rect x="170" y="0" width="70" height="70" fill="#1f2937" rx="10"/>
+      <rect x="180" y="10" width="50" height="50" fill="white" rx="5"/>
+      <rect x="190" y="20" width="30" height="30" fill="#1f2937" rx="3"/>
+      
+      <rect x="0" y="170" width="70" height="70" fill="#1f2937" rx="10"/>
+      <rect x="10" y="180" width="50" height="50" fill="white" rx="5"/>
+      <rect x="20" y="190" width="30" height="30" fill="#1f2937" rx="3"/>
+      
+      <!-- 数据模块 -->
+      <rect x="90" y="20" width="10" height="10" fill="#1f2937"/>
+      <rect x="110" y="20" width="10" height="10" fill="#1f2937"/>
+      <rect x="130" y="20" width="10" height="10" fill="#1f2937"/>
+      <rect x="150" y="20" width="10" height="10" fill="#1f2937"/>
+      
+      <rect x="90" y="40" width="10" height="10" fill="#1f2937"/>
+      <rect x="130" y="40" width="10" height="10" fill="#1f2937"/>
+      
+      <rect x="90" y="60" width="10" height="10" fill="#1f2937"/>
+      <rect x="110" y="60" width="10" height="10" fill="#1f2937"/>
+      <rect x="150" y="60" width="10" height="10" fill="#1f2937"/>
+      
+      <!-- 中心logo区域 -->
+      <circle cx="120" cy="120" r="25" fill="#2563eb"/>
+      <text x="120" y="128" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="20" font-weight="bold">QR</text>
+    </g>
+  </g>
+  
+  <!-- 主标题 -->
+  <text x="60" y="200" fill="white" font-family="Arial, sans-serif" font-size="64" font-weight="bold">
+    QR Code Generator
+  </text>
+  
+  <!-- 副标题 -->
+  <text x="60" y="260" fill="rgba(255,255,255,0.9)" font-family="Arial, sans-serif" font-size="32" font-weight="normal">
+    Free Online QR Code Maker
+  </text>
+  
+  <!-- 特性列表 -->
+  <g transform="translate(60, 320)">
+    <circle cx="0" cy="0" r="4" fill="#10b981"/>
+    <text x="20" y="6" fill="white" font-family="Arial, sans-serif" font-size="24">Free &amp; No Registration Required</text>
+    
+    <circle cx="0" cy="40" r="4" fill="#10b981"/>
+    <text x="20" y="46" fill="white" font-family="Arial, sans-serif" font-size="24">Custom Colors &amp; Logo Support</text>
+    
+    <circle cx="0" cy="80" r="4" fill="#10b981"/>
+    <text x="20" y="86" fill="white" font-family="Arial, sans-serif" font-size="24">Multiple Formats: PNG, JPG, SVG</text>
+    
+    <circle cx="0" cy="120" r="4" fill="#10b981"/>
+    <text x="20" y="126" fill="white" font-family="Arial, sans-serif" font-size="24">Bulk Generation Available</text>
+  </g>
+  
+  <!-- 网站URL -->
+  <text x="60" y="580" fill="rgba(255,255,255,0.8)" font-family="Arial, sans-serif" font-size="28" font-weight="normal">
+    qrgeneratortool.top
+  </text>
+</svg>

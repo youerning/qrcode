@@ -1,0 +1,75 @@
+{
+  "name": "QR Code Generator - Free Online QR Code Maker",
+  "short_name": "QR Generator",
+  "description": "Free online QR code generator for text, URLs, contacts, WiFi, email, and SMS. Create custom QR codes instantly.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["utilities", "productivity", "business"],
+  "icons": [
+    {
+      "src": "/assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/favicon.ico",
+      "sizes": "16x16 32x32 48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/images/screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "QR Code Generator on mobile"
+    },
+    {
+      "src": "/assets/images/screenshot-desktop.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "QR Code Generator on desktop"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Generate QR Code",
+      "short_name": "Generate",
+      "description": "Quickly generate a new QR code",
+      "url": "/#generator",
+      "icons": [
+        {
+          "src": "/assets/favicon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Scan QR Code",
+      "short_name": "Scan",
+      "description": "Scan an existing QR code",
+      "url": "/#scanner",
+      "icons": [
+        {
+          "src": "/assets/favicon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
+}

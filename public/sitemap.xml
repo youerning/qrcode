@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- 主页 -->
+  <!-- home -->
   <url>
     <loc>https://qrgeneratortool.top/</loc>
     <lastmod>2025-01-16</lastmod>
@@ -8,7 +8,7 @@
     <priority>1.0</priority>
   </url>
   
-  <!-- 帮助中心 -->
+  <!-- help center -->
   <url>
     <loc>https://qrgeneratortool.top/help.html</loc>
     <lastmod>2025-01-16</lastmod>
@@ -16,7 +16,7 @@
     <priority>0.8</priority>
   </url>
   
-  <!-- 关于页面 -->
+  <!-- about -->
   <url>
     <loc>https://qrgeneratortool.top/about.html</loc>
     <lastmod>2025-01-16</lastmod>
@@ -24,7 +24,7 @@
     <priority>0.7</priority>
   </url>
   
-  <!-- 博客主页 -->
+  <!-- blog -->
   <url>
     <loc>https://qrgeneratortool.top/blog/</loc>
     <lastmod>2025-01-16</lastmod>
@@ -32,9 +32,44 @@
     <priority>0.8</priority>
   </url>
   
-  <!-- 博客文章 -->
+  <!-- blog articles -->
   <url>
     <loc>https://qrgeneratortool.top/blog/qr-code-marketing-guide.html</loc>
+    <lastmod>2025-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://qrgeneratortool.top/blog/qr-code-best-practices.html</loc>
+    <lastmod>2025-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://qrgeneratortool.top/blog/wifi-qr-codes-guide.html</loc>
+    <lastmod>2025-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://qrgeneratortool.top/blog/qr-codes-restaurants.html</loc>
+    <lastmod>2025-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://qrgeneratortool.top/blog/qr-code-security-tips.html</loc>
+    <lastmod>2025-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://qrgeneratortool.top/blog/qr-codes-education.html</loc>
     <lastmod>2025-01-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
