@@ -1,0 +1,21 @@
+# robots.txt for QRGeneratorTool.top
+# 允许所有搜索引擎爬虫访问网站
+
+User-agent: *
+Allow: /
+
+# 指定sitemap位置
+Sitemap: https://qrgeneratortool.top/sitemap.xml
+
+# 禁止访问开发相关目录
+Disallow: /node_modules/
+Disallow: /src/
+Disallow: /.git/
+Disallow: /cf-src/
+
+# 允许访问重要的SEO文件
+Allow: /sitemap.xml
+Allow: /robots.txt
+
+# 爬取延迟（可选，对服务器友好）
+Crawl-delay: 1
