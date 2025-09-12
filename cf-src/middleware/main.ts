@@ -20,42 +20,8 @@ const gaScript = `<!-- Google tag (gtag.js) -->
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  
-  gtag('config', 'GA_MEASUREMENT_ID', {
-    page_title: document.title,
-    page_location: window.location.href,
-    content_group1: 'QR Generator',
-    custom_map: {
-      'dimension1': 'qr_type',
-      'dimension2': 'user_type'
-    }
-  });
-  
-  // 自定义事件跟踪函数
-  window.trackQRGeneration = function(type, format) {
-    gtag('event', 'qr_code_generated', {
-      'qr_type': type,
-      'export_format': format,
-      'event_category': 'engagement',
-      'event_label': type + '_' + format
-    });
-  };
-  
-  window.trackDownload = function(format) {
-    gtag('event', 'qr_code_download', {
-      'export_format': format,
-      'event_category': 'conversion',
-      'value': 1
-    });
-  };
-  
-  window.trackPageView = function(page) {
-    gtag('event', 'page_view', {
-      'page_title': document.title,
-      'page_location': window.location.href,
-      'page_path': page
-    });
-  };
+
+  gtag('config', 'G-QZWS21RCLH');
 </script>
 
 <!-- Bing Clarity -->
