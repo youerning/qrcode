@@ -131,6 +131,39 @@
       <small>{{ $t('forms.sms.hint') }}</small>
     </div>
 
+    <!-- Logo上传区域 -->
+    <div class="form-group logo-section">
+      <label>{{ $t('forms.logo.title') }}</label>
+      <div class="logo-upload-area">
+        <input 
+          type="file" 
+          ref="logoInput"
+          @change="handleLogoUpload"
+          accept="image/*"
+          class="logo-input"
+          id="logo-upload"
+        />
+        <label for="logo-upload" class="logo-upload-btn">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7,10 12,15 17,10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          {{ logoFile ? $t('forms.logo.change') : $t('forms.logo.upload') }}
+        </label>
+        <div v-if="logoFile" class="logo-preview">
+          <img :src="logoPreview" :alt="$t('forms.logo.preview')" />
+          <button @click="removeLogo" class="remove-logo-btn" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <small>{{ $t('forms.logo.hint') }}</small>
+    </div>
+
     <!-- 生成按钮 -->
     <button 
       @click="handleGenerate" 
@@ -187,7 +220,10 @@ export default {
           phone: '',
           message: ''
         }
-      }
+      },
+      // Logo相关数据
+      logoFile: null,
+      logoPreview: null
     }
   },
   computed: {
@@ -249,7 +285,54 @@ export default {
           break
       }
       
-      this.$emit('generate', content)
+      // 传递内容和logo信息
+      this.$emit('generate', {
+        content,
+        logo: this.logoFile
+      })
+    },
+    
+    /**
+     * 处理logo文件上传
+     * @param {Event} event - 文件选择事件
+     */
+    handleLogoUpload(event) {
+      const file = event.target.files[0]
+      if (!file) return
+      
+      // 验证文件类型
+      if (!file.type.startsWith('image/')) {
+        alert(this.$t('forms.logo.invalidType'))
+        return
+      }
+      
+      // 验证文件大小（限制为2MB）
+      const maxSize = 2 * 1024 * 1024 // 2MB
+      if (file.size > maxSize) {
+        alert(this.$t('forms.logo.tooLarge'))
+        return
+      }
+      
+      this.logoFile = file
+      
+      // 创建预览
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        this.logoPreview = e.target.result
+      }
+      reader.readAsDataURL(file)
+    },
+    
+    /**
+     * 移除已选择的logo
+     */
+    removeLogo() {
+      this.logoFile = null
+      this.logoPreview = null
+      // 清空文件输入框
+      if (this.$refs.logoInput) {
+        this.$refs.logoInput.value = ''
+      }
     },
     
     // 验证URL格式
@@ -268,7 +351,9 @@ export default {
       return emailRegex.test(email)
     },
     
-    // 清空表单
+    /**
+     * 清空表单数据
+     */
     clearForm() {
       this.formData = {
         text: '',
@@ -296,6 +381,9 @@ export default {
           message: ''
         }
       }
+      
+      // 清空logo数据
+      this.removeLogo()
     }
   },
   
@@ -307,3 +395,92 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+/* Logo上传区域样式 */
+.logo-section {
+  margin-top: 20px;
+  padding: 20px;
+  border: 2px dashed #e5e7eb;
+  border-radius: 8px;
+  background-color: #f9fafb;
+  transition: all 0.3s ease;
+}
+
+.logo-section:hover {
+  border-color: #3b82f6;
+  background-color: #eff6ff;
+}
+
+.logo-upload-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo-input {
+  display: none;
+}
+
+.logo-upload-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.logo-upload-btn:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.logo-preview {
+  position: relative;
+  display: inline-block;
+}
+
+.logo-preview img {
+  max-width: 100px;
+  max-height: 100px;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.remove-logo-btn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.remove-logo-btn:hover {
+  background-color: #dc2626;
+  transform: scale(1.1);
+}
+
+.logo-section small {
+  color: #6b7280;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 10px;
+}
+</style>

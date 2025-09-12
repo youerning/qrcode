@@ -138,7 +138,7 @@
 
 <script>
 import QRForm from './components/QRForm.vue'
-import { generateQRCode } from './utils/qrGenerator.js'
+import { generateQRCode, generateQRCodeWithLogo } from './utils/qrGenerator.js'
 import { translations } from './utils/i18n.js'
 
 export default {
@@ -186,11 +186,27 @@ export default {
       return value || key
     },
     
-    // 生成二维码
-    async generateQR(content) {
+    /**
+     * 生成二维码
+     * @param {string|Object} data - 二维码内容或包含content和logo的对象
+     */
+    async generateQR(data) {
       try {
+        // 兼容旧版本的字符串参数和新版本的对象参数
+        const content = typeof data === 'string' ? data : data.content
+        const logo = typeof data === 'object' ? data.logo : null
+        
         this.currentQRContent = content
-        this.qrDataUrl = await generateQRCode(content)
+        
+        // 根据是否有logo选择不同的生成方法
+        if (logo) {
+          this.qrDataUrl = await generateQRCodeWithLogo(content, logo)
+        } else {
+          this.qrDataUrl = await generateQRCode(content)
+        }
+        
+        // 显示成功消息
+        console.log('二维码生成成功')
       } catch (error) {
         console.error('生成二维码失败:', error)
         alert(this.$t('errors.generateFailed'))

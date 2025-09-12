@@ -65,6 +65,15 @@ export const translations = {
         phone: 'Phone Number',
         message: 'Message',
         hint: 'Maximum 160 characters for message'
+      },
+      logo: {
+        title: 'Add Logo (Optional)',
+        upload: 'Upload Logo',
+        change: 'Change Logo',
+        preview: 'Logo Preview',
+        hint: 'Upload an image to embed in the center of your QR code. Supports JPG, PNG, GIF. Max size: 2MB',
+        invalidType: 'Please select a valid image file (JPG, PNG, GIF)',
+        tooLarge: 'File size too large. Please select a file smaller than 2MB'
       }
     },
     buttons: {
@@ -174,6 +183,15 @@ export const translations = {
         phone: '电话号码',
         message: '短信内容',
         hint: '短信内容最多160个字符'
+      },
+      logo: {
+        title: '添加Logo（可选）',
+        upload: '上传Logo',
+        change: '更换Logo',
+        preview: 'Logo预览',
+        hint: '上传图片嵌入到二维码中心。支持JPG、PNG、GIF格式，最大2MB',
+        invalidType: '请选择有效的图片文件（JPG、PNG、GIF）',
+        tooLarge: '文件过大，请选择小于2MB的文件'
       }
     },
     buttons: {

@@ -1,6 +1,92 @@
 import QRCode from 'qrcode'
 
 /**
+ * 将图片文件转换为Image对象
+ * @param {File} file - 图片文件
+ * @returns {Promise<HTMLImageElement>} 返回Image对象
+ */
+function loadImageFromFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const img = new Image()
+      img.onload = () => resolve(img)
+      img.onerror = reject
+      img.src = e.target.result
+    }
+    reader.onerror = reject
+    reader.readAsDataURL(file)
+  })
+}
+
+/**
+ * 在canvas上绘制带logo的二维码
+ * @param {string} content - 二维码内容
+ * @param {File} logoFile - logo文件
+ * @param {Object} options - 二维码选项
+ * @returns {Promise<string>} 返回base64格式的图片数据URL
+ */
+export async function generateQRCodeWithLogo(content, logoFile, options = {}) {
+  try {
+    // 默认配置
+    const defaultOptions = {
+      width: 300,
+      margin: 2,
+      color: {
+        dark: '#000000',
+        light: '#FFFFFF'
+      },
+      errorCorrectionLevel: 'H' // 使用高错误纠正级别以支持logo
+    }
+    
+    // 合并配置
+    const finalOptions = { ...defaultOptions, ...options }
+    
+    // 创建canvas
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    
+    // 生成二维码到canvas
+    await QRCode.toCanvas(canvas, content, finalOptions)
+    
+    // 如果有logo文件，则添加logo
+    if (logoFile) {
+      const logoImg = await loadImageFromFile(logoFile)
+      
+      // 计算logo尺寸（二维码的15%）
+      const logoSize = canvas.width * 0.15
+      const logoX = (canvas.width - logoSize) / 2
+      const logoY = (canvas.height - logoSize) / 2
+      
+      // 绘制白色背景圆形（确保logo清晰可见）
+      const bgSize = logoSize * 1.2
+      const bgX = (canvas.width - bgSize) / 2
+      const bgY = (canvas.height - bgSize) / 2
+      
+      ctx.fillStyle = '#FFFFFF'
+      ctx.beginPath()
+      ctx.arc(bgX + bgSize/2, bgY + bgSize/2, bgSize/2, 0, 2 * Math.PI)
+      ctx.fill()
+      
+      // 绘制logo（圆形裁剪）
+      ctx.save()
+      ctx.beginPath()
+      ctx.arc(logoX + logoSize/2, logoY + logoSize/2, logoSize/2, 0, 2 * Math.PI)
+      ctx.clip()
+      ctx.drawImage(logoImg, logoX, logoY, logoSize, logoSize)
+      ctx.restore()
+    }
+    
+    // 返回base64数据URL
+    return canvas.toDataURL('image/png')
+    
+  } catch (error) {
+    console.error('生成带logo的二维码失败:', error)
+    throw new Error('生成带logo的二维码失败，请检查输入内容和logo文件')
+  }
+}
+
+/**
  * 生成二维码图片
  * @param {string} content - 要编码的内容
  * @param {Object} options - 二维码生成选项
