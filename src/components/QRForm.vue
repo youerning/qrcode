@@ -164,6 +164,26 @@
       <small>{{ $t('forms.logo.hint') }}</small>
     </div>
 
+    <!-- 下载格式选择 -->
+    <div class="form-group">
+      <label>{{ $t('forms.format.title') }}</label>
+      <div class="format-options">
+        <label class="format-option">
+          <input type="radio" v-model="downloadFormat" value="png">
+          <span>PNG</span>
+        </label>
+        <label class="format-option">
+          <input type="radio" v-model="downloadFormat" value="jpg">
+          <span>JPG</span>
+        </label>
+        <label class="format-option">
+          <input type="radio" v-model="downloadFormat" value="svg">
+          <span>SVG</span>
+        </label>
+      </div>
+      <small>{{ $t('forms.format.hint') }}</small>
+    </div>
+
     <!-- 生成按钮 -->
     <button 
       @click="handleGenerate" 
@@ -223,7 +243,9 @@ export default {
       },
       // Logo相关数据
       logoFile: null,
-      logoPreview: null
+      logoPreview: null,
+      // 下载格式
+      downloadFormat: 'png'
     }
   },
   computed: {
@@ -288,7 +310,8 @@ export default {
       // 传递内容和logo信息
       this.$emit('generate', {
         content,
-        logo: this.logoFile
+        logo: this.logoFile,
+        format: this.downloadFormat
       })
     },
     
@@ -482,5 +505,26 @@ export default {
   font-size: 12px;
   text-align: center;
   margin-top: 10px;
+}
+
+/* 下载格式样式 */
+.format-options {
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.format-option {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.format-option input {
+  margin-right: 8px;
+}
+
+.format-option span {
+  font-size: 14px;
 }
 </style>

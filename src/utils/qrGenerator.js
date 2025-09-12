@@ -24,9 +24,13 @@ function loadImageFromFile(file) {
  * @param {string} content - 二维码内容
  * @param {File} logoFile - logo文件
  * @param {Object} options - 二维码选项
+ * @param {string} format - 图片格式 ('png', 'jpg')
  * @returns {Promise<string>} 返回base64格式的图片数据URL
  */
-export async function generateQRCodeWithLogo(content, logoFile, options = {}) {
+export async function generateQRCodeWithLogo(content, logoFile, options = {}, format = 'png') {
+  if (format === 'svg') {
+    return Promise.reject(new Error('带logo的SVG格式二维码暂不支持。'));
+  }
   try {
     // 默认配置
     const defaultOptions = {
@@ -78,7 +82,8 @@ export async function generateQRCodeWithLogo(content, logoFile, options = {}) {
     }
     
     // 返回base64数据URL
-    return canvas.toDataURL('image/png')
+    const dataType = format === 'jpg' ? 'image/jpeg' : 'image/png';
+    return canvas.toDataURL(dataType);
     
   } catch (error) {
     console.error('生成带logo的二维码失败:', error)
@@ -90,9 +95,10 @@ export async function generateQRCodeWithLogo(content, logoFile, options = {}) {
  * 生成二维码图片
  * @param {string} content - 要编码的内容
  * @param {Object} options - 二维码生成选项
- * @returns {Promise<string>} 返回base64格式的图片数据URL
+ * @param {string} format - 图片格式 ('png', 'jpg', 'svg')
+ * @returns {Promise<string>} 返回base64格式的图片数据URL或SVG字符串
  */
-export async function generateQRCode(content, options = {}) {
+export async function generateQRCode(content, options = {}, format = 'png') {
   try {
     // 默认配置
     const defaultOptions = {
@@ -108,8 +114,22 @@ export async function generateQRCode(content, options = {}) {
     // 合并配置
     const finalOptions = { ...defaultOptions, ...options }
     
+    if (format === 'svg') {
+      return new Promise((resolve, reject) => {
+        QRCode.toString(content, {...finalOptions, type: 'svg'}, (err, svgString) => {
+          if (err) {
+            console.error('生成SVG二维码失败:', err);
+            reject(new Error('生成SVG二维码失败，请检查输入内容'));
+          } else {
+            resolve(svgString);
+          }
+        });
+      });
+    }
+
+    const dataType = format === 'jpg' ? 'image/jpeg' : 'image/png';
     // 生成二维码
-    const dataUrl = await QRCode.toDataURL(content, finalOptions)
+    const dataUrl = await QRCode.toDataURL(content, {...finalOptions, type: dataType});
     
     return dataUrl
   } catch (error) {
@@ -121,14 +141,15 @@ export async function generateQRCode(content, options = {}) {
 /**
  * 生成高质量二维码（用于下载）
  * @param {string} content - 要编码的内容
- * @returns {Promise<string>} 返回高分辨率的base64图片数据URL
+ * @param {string} format - 图片格式 ('png', 'jpg', 'svg')
+ * @returns {Promise<string>} 返回高分辨率的base64图片数据URL或SVG字符串
  */
-export async function generateHighQualityQR(content) {
+export async function generateHighQualityQR(content, format = 'png') {
   return generateQRCode(content, {
     width: 800,
     margin: 4,
     errorCorrectionLevel: 'H'
-  })
+  }, format)
 }
 
 /**
@@ -152,19 +173,30 @@ export function validateQRContent(content, errorLevel = 'M') {
 
 /**
  * 下载二维码图片
- * @param {string} dataUrl - 图片数据URL
+ * @param {string} dataUrl - 图片数据URL或SVG字符串
  * @param {string} filename - 文件名（不包含扩展名）
+ * @param {string} format - 图片格式 ('png', 'jpg', 'svg')
  */
-export function downloadQRImage(dataUrl, filename = 'qrcode') {
+export function downloadQRImage(dataUrl, filename = 'qrcode', format = 'png') {
   try {
     const link = document.createElement('a')
-    link.download = `${filename}-${Date.now()}.png`
-    link.href = dataUrl
+    link.download = `${filename}-${Date.now()}.${format}`
+    
+    if (format === 'svg') {
+      const blob = new Blob([dataUrl], { type: 'image/svg+xml;charset=utf-8' });
+      link.href = URL.createObjectURL(blob);
+    } else {
+      link.href = dataUrl;
+    }
     
     // 临时添加到DOM并触发点击
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
+
+    if (format === 'svg') {
+      URL.revokeObjectURL(link.href);
+    }
   } catch (error) {
     console.error('下载二维码失败:', error)
     throw new Error('下载失败，请重试')

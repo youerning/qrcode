@@ -74,11 +74,18 @@ export const translations = {
         hint: 'Upload an image to embed in the center of your QR code. Supports JPG, PNG, GIF. Max size: 2MB',
         invalidType: 'Please select a valid image file (JPG, PNG, GIF)',
         tooLarge: 'File size too large. Please select a file smaller than 2MB'
+      },
+      format: {
+        title: 'Download Format',
+        hint: 'Choose the format for your QR code download'
       }
     },
     buttons: {
       generate: 'Generate QR Code',
-      download: 'Download PNG',
+      download: 'Download',
+      downloadPng: 'Download PNG',
+      downloadJpg: 'Download JPG',
+      downloadSvg: 'Download SVG',
       copy: 'Copy Code'
     },
     share: {
@@ -192,11 +199,18 @@ export const translations = {
         hint: '上传图片嵌入到二维码中心。支持JPG、PNG、GIF格式，最大2MB',
         invalidType: '请选择有效的图片文件（JPG、PNG、GIF）',
         tooLarge: '文件过大，请选择小于2MB的文件'
+      },
+      format: {
+        title: '下载格式',
+        hint: '选择二维码下载格式'
       }
     },
     buttons: {
       generate: '生成二维码',
-      download: '下载PNG',
+      download: '下载',
+      downloadPng: '下载PNG',
+      downloadJpg: '下载JPG',
+      downloadSvg: '下载SVG',
       copy: '复制代码'
     },
     share: {

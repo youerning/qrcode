@@ -60,10 +60,11 @@
           <!-- 二维码显示和下载区域 -->
           <div class="output-section" v-if="qrDataUrl">
             <div class="qr-display">
-              <img :src="qrDataUrl" alt="Generated QR Code" />
+              <div v-if="qrFormat === 'svg'" v-html="qrDataUrl" class="qr-svg-container"></div>
+              <img v-else :src="qrDataUrl" alt="Generated QR Code" />
               <div class="qr-actions">
                 <button @click="downloadQR" class="download-btn">
-                  {{ $t('buttons.download') }}
+                  {{ getDownloadButtonText() }}
                 </button>
               </div>
             </div>
@@ -138,7 +139,7 @@
 
 <script>
 import QRForm from './components/QRForm.vue'
-import { generateQRCode, generateQRCodeWithLogo } from './utils/qrGenerator.js'
+import { generateQRCode, generateQRCodeWithLogo, downloadQRImage } from './utils/qrGenerator.js'
 import { translations } from './utils/i18n.js'
 
 export default {
@@ -154,6 +155,8 @@ export default {
       activeTab: 'text',
       // 生成的二维码数据URL
       qrDataUrl: '',
+      // 当前二维码格式
+      qrFormat: 'png',
       // 当前二维码内容（用于分享）
       currentQRContent: '',
       // 功能标签页配置
@@ -195,14 +198,16 @@ export default {
         // 兼容旧版本的字符串参数和新版本的对象参数
         const content = typeof data === 'string' ? data : data.content
         const logo = typeof data === 'object' ? data.logo : null
+        const format = typeof data === 'object' ? data.format : 'png'
         
         this.currentQRContent = content
+        this.qrFormat = format
         
         // 根据是否有logo选择不同的生成方法
         if (logo) {
-          this.qrDataUrl = await generateQRCodeWithLogo(content, logo)
+          this.qrDataUrl = await generateQRCodeWithLogo(content, logo, {}, format)
         } else {
-          this.qrDataUrl = await generateQRCode(content)
+          this.qrDataUrl = await generateQRCode(content, {}, format)
         }
         
         // 显示成功消息
@@ -217,12 +222,7 @@ export default {
     downloadQR() {
       if (!this.qrDataUrl) return
       
-      const link = document.createElement('a')
-      link.download = `qrcode-${Date.now()}.png`
-      link.href = this.qrDataUrl
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
+      downloadQRImage(this.qrDataUrl, 'qrcode', this.qrFormat)
     },
     
     // 获取社交分享链接
@@ -247,6 +247,16 @@ export default {
       }).catch(() => {
         alert(this.$t('errors.copyFailed'))
       })
+    },
+    
+    // 获取下载按钮文字
+    getDownloadButtonText() {
+      const formatMap = {
+        'png': 'downloadPng',
+        'jpg': 'downloadJpg', 
+        'svg': 'downloadSvg'
+      }
+      return this.$t(`buttons.${formatMap[this.qrFormat] || 'download'}`)
     }
   },
   
@@ -259,3 +269,22 @@ export default {
   }
 }
 </script>
+
+<style>
+/* SVG二维码容器样式 */
+.qr-svg-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+}
+
+.qr-svg-container svg {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+}
+</style>
