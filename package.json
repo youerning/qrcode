@@ -21,6 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "file-saver": "^2.0.5",
+    "jspdf": "^3.0.2",
     "qrcode": "^1.5.3",
     "vue": "^3.4.0"
   },

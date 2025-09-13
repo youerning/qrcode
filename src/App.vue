@@ -61,6 +61,10 @@
           <div class="output-section" v-if="qrDataUrl">
             <div class="qr-display">
               <div v-if="qrFormat === 'svg'" v-html="qrDataUrl" class="qr-svg-container"></div>
+              <div v-else-if="qrFormat === 'pdf'" class="qr-pdf-preview">
+                <div class="pdf-icon">📄</div>
+                <p>{{ $t('messages.pdfReady') }}</p>
+              </div>
               <img v-else :src="qrDataUrl" alt="Generated QR Code" />
               <div class="qr-actions">
                 <button @click="downloadQR" class="download-btn">
@@ -122,6 +126,10 @@
           <a href="help.html#wifi" class="help-link">
             <h4>{{ $t('help.wifiQR') }}</h4>
             <p>{{ $t('help.wifiDesc') }}</p>
+          </a>
+          <a href="blog/qr-to-pdf-converter.html" class="help-link">
+            <h4>{{ $t('help.pdfQR') }}</h4>
+            <p>{{ $t('help.pdfDesc') }}</p>
           </a>
         </div>
       </section>
@@ -254,7 +262,8 @@ export default {
       const formatMap = {
         'png': 'downloadPng',
         'jpg': 'downloadJpg', 
-        'svg': 'downloadSvg'
+        'svg': 'downloadSvg',
+        'pdf': 'downloadPdf'
       }
       return this.$t(`buttons.${formatMap[this.qrFormat] || 'download'}`)
     }
@@ -286,5 +295,30 @@ export default {
   max-height: 100%;
   width: auto;
   height: auto;
+}
+
+/* PDF预览样式 */
+.qr-pdf-preview {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  height: 300px;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.qr-pdf-preview .pdf-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.qr-pdf-preview p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+  text-align: center;
 }
 </style>

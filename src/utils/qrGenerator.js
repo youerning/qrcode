@@ -1,4 +1,5 @@
 import QRCode from 'qrcode'
+import { jsPDF } from 'jspdf'
 
 /**
  * 将图片文件转换为Image对象
@@ -24,12 +25,15 @@ function loadImageFromFile(file) {
  * @param {string} content - 二维码内容
  * @param {File} logoFile - logo文件
  * @param {Object} options - 二维码选项
- * @param {string} format - 图片格式 ('png', 'jpg')
- * @returns {Promise<string>} 返回base64格式的图片数据URL
+ * @param {string} format - 图片格式 ('png', 'jpg', 'pdf')
+ * @returns {Promise<string>} 返回base64格式的图片数据URL或PDF blob URL
  */
 export async function generateQRCodeWithLogo(content, logoFile, options = {}, format = 'png') {
   if (format === 'svg') {
     return Promise.reject(new Error('带logo的SVG格式二维码暂不支持。'));
+  }
+  if (format === 'pdf') {
+    return Promise.reject(new Error('带logo的PDF格式二维码暂不支持。'));
   }
   try {
     // 默认配置
@@ -95,8 +99,8 @@ export async function generateQRCodeWithLogo(content, logoFile, options = {}, fo
  * 生成二维码图片
  * @param {string} content - 要编码的内容
  * @param {Object} options - 二维码生成选项
- * @param {string} format - 图片格式 ('png', 'jpg', 'svg')
- * @returns {Promise<string>} 返回base64格式的图片数据URL或SVG字符串
+ * @param {string} format - 图片格式 ('png', 'jpg', 'svg', 'pdf')
+ * @returns {Promise<string>} 返回base64格式的图片数据URL、SVG字符串或PDF blob URL
  */
 export async function generateQRCode(content, options = {}, format = 'png') {
   try {
@@ -127,6 +131,12 @@ export async function generateQRCode(content, options = {}, format = 'png') {
       });
     }
 
+    if (format === 'pdf') {
+      // PDF格式
+      const dataUrl = await QRCode.toDataURL(content, finalOptions);
+      return await generatePDFFromDataUrl(dataUrl);
+    }
+
     const dataType = format === 'jpg' ? 'image/jpeg' : 'image/png';
     // 生成二维码
     const dataUrl = await QRCode.toDataURL(content, {...finalOptions, type: dataType});
@@ -139,10 +149,42 @@ export async function generateQRCode(content, options = {}, format = 'png') {
 }
 
 /**
+ * 生成PDF格式的二维码
+ * @param {string} dataUrl - 二维码的base64数据URL
+ * @returns {Promise<string>} 返回PDF的blob URL
+ */
+async function generatePDFFromDataUrl(dataUrl) {
+  try {
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4'
+    })
+    
+    // 计算居中位置
+    const pageWidth = pdf.internal.pageSize.getWidth()
+    const pageHeight = pdf.internal.pageSize.getHeight()
+    const qrSize = 80 // 二维码大小 (mm)
+    const x = (pageWidth - qrSize) / 2
+    const y = (pageHeight - qrSize) / 2
+    
+    // 添加二维码到PDF
+    pdf.addImage(dataUrl, 'PNG', x, y, qrSize, qrSize)
+    
+    // 返回PDF的blob URL
+    const pdfBlob = pdf.output('blob')
+    return URL.createObjectURL(pdfBlob)
+  } catch (error) {
+    console.error('生成PDF失败:', error)
+    throw new Error('PDF生成失败，请重试')
+  }
+}
+
+/**
  * 生成高质量二维码（用于下载）
  * @param {string} content - 要编码的内容
- * @param {string} format - 图片格式 ('png', 'jpg', 'svg')
- * @returns {Promise<string>} 返回高分辨率的base64图片数据URL或SVG字符串
+ * @param {string} format - 图片格式 ('png', 'jpg', 'svg', 'pdf')
+ * @returns {Promise<string>} 返回高分辨率的base64图片数据URL、SVG字符串或PDF blob URL
  */
 export async function generateHighQualityQR(content, format = 'png') {
   return generateQRCode(content, {
@@ -173,9 +215,9 @@ export function validateQRContent(content, errorLevel = 'M') {
 
 /**
  * 下载二维码图片
- * @param {string} dataUrl - 图片数据URL或SVG字符串
+ * @param {string} dataUrl - 图片数据URL、SVG字符串或PDF blob URL
  * @param {string} filename - 文件名（不包含扩展名）
- * @param {string} format - 图片格式 ('png', 'jpg', 'svg')
+ * @param {string} format - 图片格式 ('png', 'jpg', 'svg', 'pdf')
  */
 export function downloadQRImage(dataUrl, filename = 'qrcode', format = 'png') {
   try {
@@ -185,6 +227,9 @@ export function downloadQRImage(dataUrl, filename = 'qrcode', format = 'png') {
     if (format === 'svg') {
       const blob = new Blob([dataUrl], { type: 'image/svg+xml;charset=utf-8' });
       link.href = URL.createObjectURL(blob);
+    } else if (format === 'pdf') {
+      // PDF格式，dataUrl已经是blob URL
+      link.href = dataUrl;
     } else {
       link.href = dataUrl;
     }
@@ -194,8 +239,11 @@ export function downloadQRImage(dataUrl, filename = 'qrcode', format = 'png') {
     link.click()
     document.body.removeChild(link)
 
-    if (format === 'svg') {
-      URL.revokeObjectURL(link.href);
+    // 清理blob URL
+    if (format === 'svg' || format === 'pdf') {
+      setTimeout(() => {
+        URL.revokeObjectURL(link.href);
+      }, 100);
     }
   } catch (error) {
     console.error('下载二维码失败:', error)

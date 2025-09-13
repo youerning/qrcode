@@ -180,6 +180,10 @@
           <input type="radio" v-model="downloadFormat" value="svg">
           <span>SVG</span>
         </label>
+        <label class="format-option">
+          <input type="radio" v-model="downloadFormat" value="pdf">
+          <span>PDF</span>
+        </label>
       </div>
       <small>{{ $t('forms.format.hint') }}</small>
     </div>

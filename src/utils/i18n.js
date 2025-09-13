@@ -86,6 +86,7 @@ export const translations = {
       downloadPng: 'Download PNG',
       downloadJpg: 'Download JPG',
       downloadSvg: 'Download SVG',
+      downloadPdf: 'Download PDF',
       copy: 'Copy Code'
     },
     share: {
@@ -109,15 +110,21 @@ export const translations = {
       contactQR: 'Contact QR Codes',
       contactDesc: 'Share contact information easily',
       wifiQR: 'WiFi QR Codes',
-      wifiDesc: 'Let others connect to your WiFi instantly'
+      wifiDesc: 'Let others connect to your WiFi instantly',
+      pdfQR: 'QR to PDF Guide',
+      pdfDesc: 'Learn how to convert QR codes to PDF format for printing.'
     },
     footer: {
       copyright: '© 2024 QR Generator Tool. All rights reserved.',
       contact: 'Contact us'
     },
     messages: {
-      copied: 'Copied to clipboard!',
-      generated: 'QR code generated successfully!'
+      generating: 'Generating QR code...',
+      success: 'QR code generated successfully!',
+      error: 'Failed to generate QR code. Please try again.',
+      copied: 'QR code copied to clipboard!',
+      copyError: 'Failed to copy QR code',
+      pdfReady: 'PDF is ready for download'
     },
     errors: {
       generateFailed: 'Failed to generate QR code. Please try again.',
@@ -211,6 +218,7 @@ export const translations = {
       downloadPng: '下载PNG',
       downloadJpg: '下载JPG',
       downloadSvg: '下载SVG',
+      downloadPdf: '下载PDF',
       copy: '复制代码'
     },
     share: {
@@ -234,15 +242,21 @@ export const translations = {
       contactQR: '联系人二维码',
       contactDesc: '轻松分享联系信息',
       wifiQR: 'WiFi二维码',
-      wifiDesc: '让他人快速连接您的WiFi'
+      wifiDesc: '让他人快速连接您的WiFi',
+      pdfQR: '二维码转PDF指南',
+      pdfDesc: '了解如何将二维码转换为PDF格式以便打印。'
     },
     footer: {
       copyright: '© 2024 二维码生成工具。保留所有权利。',
       contact: '联系我们'
     },
     messages: {
-      copied: '已复制到剪贴板！',
-      generated: '二维码生成成功！'
+      generating: '正在生成二维码...',
+      success: '二维码生成成功！',
+      error: '生成二维码失败，请重试。',
+      copied: '二维码已复制到剪贴板！',
+      copyError: '复制二维码失败',
+      pdfReady: 'PDF已准备好下载'
     },
     errors: {
       generateFailed: '生成二维码失败，请重试。',
