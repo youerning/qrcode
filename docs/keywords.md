@@ -1,3 +1,3 @@
 # keywords
 
-1. qrcode to pdf
+1. ~~qrcode to pdf~~
