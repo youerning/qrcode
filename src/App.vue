@@ -148,7 +148,7 @@
 <script>
 import QRForm from './components/QRForm.vue'
 import { generateQRCode, generateQRCodeWithLogo, downloadQRImage } from './utils/qrGenerator.js'
-import { translations } from './utils/i18n.js'
+import { translations, t, getCurrentLanguage, setLanguage, initializeLanguage } from './utils/i18n.js'
 
 export default {
   name: 'App',
@@ -271,10 +271,8 @@ export default {
   
   // 组件挂载时初始化语言设置
   mounted() {
-    const savedLang = localStorage.getItem('qr-lang')
-    if (savedLang && ['en', 'zh'].includes(savedLang)) {
-      this.currentLang = savedLang
-    }
+    // 使用新的语言初始化函数，支持URL参数检测
+    this.currentLang = initializeLanguage()
   }
 }
 </script>

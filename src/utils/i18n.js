@@ -303,3 +303,42 @@ export function setLanguage(lang) {
     localStorage.setItem('qr-lang', lang)
   }
 }
+
+/**
+ * 从URL参数中检测语言设置
+ * 检查URL中是否包含?lang=zh参数，如果有则自动切换到中文
+ * @returns {string|null} 检测到的语言代码，如果没有则返回null
+ */
+export function detectLanguageFromUrl() {
+  const urlParams = new URLSearchParams(window.location.search)
+  const langParam = urlParams.get('lang')
+  
+  if (langParam && ['en', 'zh'].includes(langParam)) {
+    setLanguage(langParam)
+    return langParam
+  }
+  
+  return null
+}
+
+/**
+ * 初始化语言设置
+ * 优先级：URL参数 > localStorage > 默认英文
+ * @returns {string} 最终确定的语言代码
+ */
+export function initializeLanguage() {
+  // 首先检查URL参数
+  const urlLang = detectLanguageFromUrl()
+  if (urlLang) {
+    return urlLang
+  }
+  
+  // 然后检查localStorage
+  const savedLang = getCurrentLanguage()
+  if (savedLang && ['en', 'zh'].includes(savedLang)) {
+    return savedLang
+  }
+  
+  // 默认返回英文
+  return 'en'
+}
